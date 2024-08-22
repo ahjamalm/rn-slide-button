@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import {
   GestureEvent,
   PanGestureHandler,
@@ -15,15 +15,16 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import {SlideButtonCommonProps} from './SlideButton';
+import { SlideButtonCommonProps } from './SlideButton';
 
 const DEFAULT_ICON_CONTAINER_COLOR = '#FFFFFF';
 
 export interface SlideButtonThumbProps extends SlideButtonCommonProps {
   gestureHandler?:
-    | ((event: GestureEvent<PanGestureHandlerEventPayload>) => void)
-    | undefined;
+  | ((event: GestureEvent<PanGestureHandlerEventPayload>) => void)
+  | undefined;
   icon?: React.ReactNode;
+  successIcon?: React.ReactNode;
   thumbStyle?: StyleProp<ViewStyle>;
   animStarted?: () => void;
   animEnded?: () => void;
@@ -46,7 +47,8 @@ const SlideButtonThumb = ({
   animationDuration,
   dynamicResetEnabled,
   dynamicResetDelaying,
-  
+  successIcon
+
 }: SlideButtonThumbProps) => {
 
   const opacityValue = useSharedValue(1);
@@ -56,7 +58,7 @@ const SlideButtonThumb = ({
     opacityValue.value = withRepeat(
       withTiming(
         0.4,
-        {duration: animationDuration!, easing: Easing.inOut(Easing.ease)},
+        { duration: animationDuration!, easing: Easing.inOut(Easing.ease) },
       ),
       repeatCount,
       true,
@@ -78,7 +80,7 @@ const SlideButtonThumb = ({
   const thumbAnimStyle = useAnimatedStyle(() => {
     return {
       opacity: endReached ? opacityValue.value : 1,
-      transform: [{translateX: translateX.value}],
+      transform: [{ translateX: translateX.value }],
     };
   });
 
@@ -94,7 +96,7 @@ const SlideButtonThumb = ({
     width: height,
     height,
     borderRadius,
-    transform: [{scaleX: isRTL ? -1 : 1}],
+    transform: [{ scaleX: isRTL ? -1 : 1 }],
   };
 
   React.useEffect(() => {
@@ -102,7 +104,7 @@ const SlideButtonThumb = ({
       if (animation) {
         animStarted && animStarted();
         play();
-      }  
+      }
     }
   }, [endReached]);
 
@@ -110,7 +112,7 @@ const SlideButtonThumb = ({
     if (dynamicResetEnabled) {
       if (!dynamicResetDelaying) {
         stop()
-      }  
+      }
     }
   }, [dynamicResetDelaying]);
 
@@ -127,7 +129,7 @@ const SlideButtonThumb = ({
         <Animated.View
           testID="IconContainer"
           style={[styles.iconContainer, iconContainerDynamicStyle]}>
-          {icon}
+          {endReached ? successIcon : icon}
         </Animated.View>
       </Animated.View>
     </PanGestureHandler>
