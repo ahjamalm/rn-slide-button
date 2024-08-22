@@ -13,8 +13,8 @@ import { SlideButtonCommonProps } from './SlideButton';
 const DEFAULT_TEXT_COLOR = '#FAFAFA';
 
 export interface SlideButtonTextProps
-  extends Omit<SlideButtonCommonProps, 
-  'autoReset' | 'autoResetDelay' | 'animation'| 'animationDuration' | 'endReached'> {
+  extends Omit<SlideButtonCommonProps,
+    'autoReset' | 'autoResetDelay' | 'animation' | 'animationDuration' | 'endReached'> {
   title: string;
   titleStyle?: StyleProp<TextStyle>;
   titleContainerStyle?: StyleProp<ViewStyle>;
