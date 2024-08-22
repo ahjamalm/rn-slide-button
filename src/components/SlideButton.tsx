@@ -61,6 +61,8 @@ interface SlideButtonProps extends SlideButtonPropsExtends {
   thumbStyle?: StyleProp<ViewStyle>;
   autoReset?: boolean;
   autoResetDelay?: number;
+  trackView?: React.ReactNode;
+  successTrackView?: React.ReactNode;
 }
 
 type AnimatedGHContext = {
@@ -92,6 +94,7 @@ const SlideButton = ({
   titleContainerStyle,
   titleStyle,
   icon,
+  successIcon,
   thumbStyle,
   containerStyle,
   underlayStyle,
@@ -106,6 +109,8 @@ const SlideButton = ({
   animationDuration,
   dynamicResetEnabled,
   dynamicResetDelaying,
+  trackView,
+  successTrackView
 }: SlideButtonProps) => {
   const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
   const [endReached, setEndReached] = React.useState<boolean>(false);
@@ -311,13 +316,21 @@ const SlideButton = ({
           underlayStyle,
           underlayAnimStyle,
           underlayDynamicStyle,
+          { overflow: 'hidden' }
         ]}
-      />
+      >
+        <Animated.View style={{ position: 'absolute', width: '100%', height: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          {endReached ? successTrackView : trackView}
+        </Animated.View>
+
+      </Animated.View>
 
       <SlideButtonThumb
         gestureHandler={animatedGestureHandler}
         translateX={dragX}
         icon={icon}
+        successIcon={successIcon}
+
         borderRadius={radius}
         height={childHeight}
         padding={padding}
@@ -360,10 +373,10 @@ SlideButton.defaultProps = {
   animationDuration: DEFAULT_ANIMATION_DURATION,
   dynamicResetEnabled: false,
   dynamicResetDelaying: false,
-  onSlideStart: () => {},
-  onSlideEnd: () => {},
-  onReachedToStart: () => {},
-  onReachedToEnd: () => {},
+  onSlideStart: () => { },
+  onSlideEnd: () => { },
+  onReachedToStart: () => { },
+  onReachedToEnd: () => { },
 };
 
 const styles = StyleSheet.create({
